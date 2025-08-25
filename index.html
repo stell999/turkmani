@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>شركة التركماني للاتصالات - إدخال البيانات الشخصية</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #f1f5f9; font-family: system-ui, sans-serif; }
+    .card { background: white; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,.06); }
+    .required::after { content: " *"; color: #ef4444; }
+  </style>
+  <!-- مكتبة PDF417 -->
+  <script src="https://unpkg.com/bwip-js/dist/bwip-js-min.js"></script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <!-- الهيدر -->
+  <header class="bg-gradient-to-b from-sky-600 to-sky-700 text-white py-5 shadow">
+    <div class="max-w-3xl mx-auto px-4 flex items-center gap-3">
+      <div class="shrink-0 w-12 h-12 rounded-full bg-white/20 grid place-items-center text-2xl">📱</div>
+      <div>
+        <h1 class="text-xl font-bold">شركة التركماني للاتصالات</h1>
+        <p class="text-sm text-sky-100">نظام إدخال البيانات وتوليد الأكواد</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- المحتوى -->
+  <main class="flex-1 max-w-3xl mx-auto w-full p-4 sm:p-6">
+    <!-- الفورم -->
+    <section class="card p-4 sm:p-6">
+      <form id="person-form" class="grid gap-4">
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="firstName" class="required block mb-1 text-sm text-slate-700">الاسم الأول</label>
+            <input id="firstName" name="firstName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2" />
+          </div>
+          <div>
+            <label for="lastName" class="required block mb-1 text-sm text-slate-700">اسم العائلة</label>
+            <input id="lastName" name="lastName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2" />
+          </div>
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="fatherName" class="required block mb-1 text-sm text-slate-700">اسم الأب</label>
+            <input id="fatherName" name="fatherName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2" />
+          </div>
+          <div>
+            <label for="motherName" class="required block mb-1 text-sm text-slate-700">اسم الأم</label>
+            <input id="motherName" name="motherName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2" />
+          </div>
+        </div>
+        <div>
+          <label for="birthPlace" class="required block mb-1 text-sm text-slate-700">مكان الولادة</label>
+          <input id="birthPlace" name="birthPlace" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2" />
+        </div>
+
+        <fieldset>
+          <legend class="required block mb-2 text-sm text-slate-700">تاريخ الولادة</legend>
+          <div class="grid grid-cols-3 gap-3">
+            <input id="dobDay" type="number" min="1" max="31" placeholder="يوم" required class="rounded-xl border border-slate-300 px-3 py-2 text-center" />
+            <input id="dobMonth" type="number" min="1" max="12" placeholder="شهر" required class="rounded-xl border border-slate-300 px-3 py-2 text-center" />
+            <input id="dobYear" type="number" min="1900" max="2100" placeholder="سنة" required class="rounded-xl border border-slate-300 px-3 py-2 text-center" />
+          </div>
+        </fieldset>
+
+        <div>
+          <label for="nationalId" class="required block mb-1 text-sm text-slate-700">رقم الهوية</label>
+          <input id="nationalId" type="text" inputmode="numeric" required class="w-full rounded-xl border border-slate-300 px-3 py-2" />
+        </div>
+
+        <!-- الأزرار -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <div class="flex gap-2">
+            <button id="btnSubmit" type="submit" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white px-5 py-3 font-medium shadow">إرسال البيانات ✈️</button>
+            <button type="button" id="btnReset" class="rounded-2xl bg-red-500 hover:bg-red-600 text-white px-4 py-3 font-medium shadow">تصفير ↺</button>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" id="btnDownloadPDF417" class="rounded-xl border border-slate-300 px-3 py-2 text-sm">تحميل PDF417</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- النتائج -->
+    <section class="grid gap-4 mt-6">
+<div class="card p-4 rounded-2xl shadow-lg">
+  <h2 class="text-slate-700 font-semibold mb-3">الكود الثنائي الأبعاد (PDF417)</h2>
+  <div class="overflow-hidden rounded-xl border border-slate-300">
+    <canvas id="pdf417Canvas" class="w-full"></canvas>
+  </div>
+</div>
+      <div class="card p-4">
+        <h2 class="text-slate-700 font-semibold mb-2">نص المضمون</h2>
+        <textarea id="payload" class="w-full h-32 rounded-xl border border-slate-300 p-3 text-sm" readonly></textarea>
+      </div>
+    </section>
+
+    <p class="text-center text-xs text-slate-500 mt-6">© 2025 شركة التركماني للاتصالات – جميع الحقوق محفوظة</p>
+  </main>
+
+  <script>
+    const form = document.getElementById('person-form');
+    const payloadBox = document.getElementById('payload');
+    const pdfCanvas = document.getElementById('pdf417Canvas');
+
+    function buildPayload(data) {
+      const dob = `${String(data.d).padStart(2,'0')}-${String(data.m).padStart(2,'0')}-${String(data.y).padStart(4,'0')}`;
+      return [
+        `FN:${data.fn}`,
+        `LN:${data.ln}`,
+        `FATHER:${data.father}`,
+        `MOTHER:${data.mother}`,
+        `POB:${data.pob}`,
+        `DOB:${dob}`,
+        `NID:${data.nid}`
+      ].join('|');
+    }
+
+    function generatePDF417(text) {
+  try {
+    bwipjs.toCanvas('pdf417Canvas', {
+      bcid: 'pdf417',
+      text,
+      eci: 26,
+      scale: 1.5,       // أقل عرض ليتناسب مع الشاشات الصغيرة
+      height: 25,       // أطول ليصبح الكود واضحاً
+      includetext: false,
+      columns: 4,       // تقليل عدد الأعمدة ليصبح أنحف
+      securitylevel: 2
+    });
+      } catch (e) { alert('تعذّر توليد PDF417'); }
+    }
+
+    function downloadCanvas(canvas, filename) {
+      const a = document.createElement('a');
+      a.href = canvas.toDataURL('image/png');
+      a.download = filename;
+      a.click();
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = {
+        fn: firstName.value.trim(),
+        ln: lastName.value.trim(),
+        father: fatherName.value.trim(),
+        mother: motherName.value.trim(),
+        pob: birthPlace.value.trim(),
+        d: +dobDay.value, m: +dobMonth.value, y: +dobYear.value,
+        nid: nationalId.value.trim()
+      };
+      const text = buildPayload(data);
+      payloadBox.value = text;
+      generatePDF417(text);
+    });
+
+    document.getElementById('btnDownloadPDF417').onclick = () => {
+      if (!pdfCanvas.width) return alert('ولّد الكود أولاً');
+      downloadCanvas(pdfCanvas, 'pdf417.png');
+    };
+
+    // زر التصفير
+    document.getElementById('btnReset').onclick = () => {
+      form.reset();
+      payloadBox.value = "";
+      pdfCanvas.getContext('2d').clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
+    };
+  </script>
+</body>
+</html>
