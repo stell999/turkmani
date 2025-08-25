@@ -121,16 +121,16 @@
     function generatePDF417(text) {
   try {
     bwipjs.toCanvas('pdf417Canvas', {
-      bcid: 'pdf417',
+      bcid: 'pdf417',      // نوع الكود
       text,
-      eci: 26,
-      scale: 1.5,       // أقل عرض ليتناسب مع الشاشات الصغيرة
-      height: 25,       // أطول ليصبح الكود واضحاً
-      includetext: false,
-      columns: 4,       // تقليل عدد الأعمدة ليصبح أنحف
-      securitylevel: 2
+      scale: 3,            // تكبير أوضح
+      height: 6,           // ارتفاع الخلية (مو الكود كله)
+      includetext: false,  // ما يكتب النص أسفل الكود
+      columns: 0,          // يحددها تلقائي
+      securitylevel: 2     // مستوى تصحيح الأخطاء
+      // لا تحط eci حالياً
     });
-      } catch (e) { alert('تعذّر توليد PDF417'); }
+  } catch (e) { alert('تعذّر توليد PDF417: ' + e); }
     }
 
     function downloadCanvas(canvas, filename) {
