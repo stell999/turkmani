@@ -1,44 +1,28 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>شركة التركماني للاتصالات - إدخال البيانات الشخصية</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { background: #f1f5f9; font-family: 'Segoe UI', Tahoma, system-ui, sans-serif; }
-    .card { background: white; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,.06); }
-    .required::after { content: " *"; color: #ef4444; }
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      background: #4ade80;
-      color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      transform: translateY(100px);
-      opacity: 0;
-      transition: all 0.3s ease;
-      z-index: 1000;
-    }
-    .toast.show {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    .toast.error {
-      background: #ef4444;
-    }
-    @media (max-width: 640px) {
-      .grid-cols-3 {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-  </style>
-  <!-- مكتبة PDF417 -->
-  <script src="https://unpkg.com/bwip-js/dist/bwip-js-min.js"></script>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>شركة التركماني للاتصالات - إدخال البيانات الشخصية</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body { background: #f1f5f9; font-family: 'Segoe UI', Tahoma, system-ui, sans-serif; }
+  .card { background: white; border-radius: 1rem; box-shadow: 0 10px 25px rgba(0,0,0,.06); }
+  .required::after { content: " *"; color: #ef4444; }
+  .toast {
+    position: fixed; bottom: 20px; right: 20px; padding: 15px 20px;
+    background: #4ade80; color: white; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 1000;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.error { background: #ef4444; }
+
+  #barcodeCanvas {
+    width: 100%; max-width: 900px; height: auto; display: block; margin: 0 auto;
+  }
+</style>
+<script src="https://unpkg.com/bwip-js/dist/bwip-js-min.js"></script>
 </head>
 <body class="min-h-screen flex flex-col">
 
@@ -61,66 +45,56 @@
     <div class="grid gap-4 sm:grid-cols-2">
       <div>
         <label for="firstName" class="required block mb-1 text-sm text-slate-700">الاسم الأول</label>
-        <input id="firstName" name="firstName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
+        <input id="firstName" name="firstName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 outline-none transition" />
       </div>
       <div>
         <label for="lastName" class="required block mb-1 text-sm text-slate-700">اسم العائلة</label>
-        <input id="lastName" name="lastName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
+        <input id="lastName" name="lastName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 outline-none transition" />
       </div>
     </div>
 
     <div class="grid gap-4 sm:grid-cols-2">
       <div>
         <label for="fatherName" class="required block mb-1 text-sm text-slate-700">اسم الأب</label>
-        <input id="fatherName" name="fatherName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
+        <input id="fatherName" name="fatherName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 outline-none transition" />
       </div>
       <div>
         <label for="motherName" class="required block mb-1 text-sm text-slate-700">اسم الأم</label>
-        <input id="motherName" name="motherName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
+        <input id="motherName" name="motherName" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 outline-none transition" />
       </div>
     </div>
 
     <div>
       <label for="birthPlace" class="required block mb-1 text-sm text-slate-700">مكان الولادة</label>
-      <input id="birthPlace" name="birthPlace" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
+      <input id="birthPlace" name="birthPlace" type="text" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 outline-none transition" />
     </div>
 
     <fieldset>
       <legend class="required block mb-2 text-sm text-slate-700">تاريخ الولادة</legend>
       <div class="grid grid-cols-3 gap-3">
-        <div>
-          <input id="dobDay" type="number" min="1" max="31" placeholder="يوم" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-center focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
-          <span class="text-xs text-slate-500 block text-center mt-1">يوم</span>
-        </div>
-        <div>
-          <input id="dobMonth" type="number" min="1" max="12" placeholder="شهر" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-center focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
-          <span class="text-xs text-slate-500 block text-center mt-1">شهر</span>
-        </div>
-        <div>
-          <input id="dobYear" type="number" min="1900" max="2100" placeholder="سنة" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-center focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
-          <span class="text-xs text-slate-500 block text-center mt-1">سنة</span>
-        </div>
+        <input id="dobDay" type="number" min="1" max="31" placeholder="يوم" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-center focus:ring-2 focus:ring-sky-500 outline-none transition" />
+        <input id="dobMonth" type="number" min="1" max="12" placeholder="شهر" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-center focus:ring-2 focus:ring-sky-500 outline-none transition" />
+        <input id="dobYear" type="number" min="1900" max="2100" placeholder="سنة" required class="w-full rounded-xl border border-slate-300 px-3 py-2 text-center focus:ring-2 focus:ring-sky-500 outline-none transition" />
       </div>
     </fieldset>
 
     <div>
       <label for="nationalId" class="required block mb-1 text-sm text-slate-700">رقم الهوية</label>
-      <input id="nationalId" type="text" inputmode="numeric" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-transparent outline-none transition" />
-      <span class="text-xs text-slate-500 block mt-1">يجب أن يكون رقم الهوية مكونًا من 10 إلى 12 رقمًا</span>
+      <input id="nationalId" type="text" inputmode="numeric" required class="w-full rounded-xl border border-slate-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 outline-none transition" />
     </div>
 
     <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
       <div class="flex gap-2">
-        <button id="btnSubmit" type="submit" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white px-5 py-3 font-medium shadow transition flex items-center gap-2">
+        <button id="btnSubmit" type="submit" class="rounded-2xl bg-sky-600 hover:bg-sky-700 text-white px-5 py-3 flex items-center gap-2">
           <i class="fas fa-paper-plane"></i> إرسال البيانات
         </button>
-        <button type="button" id="btnReset" class="rounded-2xl bg-red-500 hover:bg-red-600 text-white px-4 py-3 font-medium shadow transition flex items-center gap-2">
+        <button type="button" id="btnReset" class="rounded-2xl bg-red-500 hover:bg-red-600 text-white px-4 py-3 flex items-center gap-2">
           <i class="fas fa-redo"></i> تصفير
         </button>
       </div>
       <div class="flex gap-2">
-        <button type="button" id="btnDownloadPDF417" class="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-2 text-sm transition flex items-center gap-2">
-          <i class="fas fa-download"></i> تحميل PDF417
+        <button type="button" id="btnDownloadBarcode" class="rounded-xl border border-slate-300 bg-white hover:bg-slate-50 px-3 py-2 flex items-center gap-2">
+          <i class="fas fa-download"></i> تحميل الباركود
         </button>
       </div>
     </div>
@@ -130,18 +104,18 @@
 <section class="grid gap-4 mt-6">
   <div class="card p-4 rounded-2xl shadow-lg">
     <h2 class="text-slate-700 font-semibold mb-3 flex items-center gap-2">
-      <i class="fas fa-qrcode"></i> الكود الثنائي الأبعاد (PDF417)
+      <i class="fas fa-barcode"></i> الكود الثنائي (Code128)
     </h2>
     <div class="overflow-hidden rounded-xl border border-slate-300 bg-white p-2">
-      <canvas id="pdf417Canvas" class="w-full"></canvas>
+      <canvas id="barcodeCanvas"></canvas>
     </div>
-    <p class="text-xs text-slate-500 mt-2 text-center">سيظهر الكود هنا بعد إدخال البيانات وتوليدها</p>
+    <p class="text-xs text-slate-500 mt-2 text-center">سيظهر الباركود هنا بعد إدخال البيانات</p>
   </div>
   <div class="card p-4">
     <h2 class="text-slate-700 font-semibold mb-2 flex items-center gap-2">
       <i class="fas fa-file-alt"></i> نص المضمون
     </h2>
-    <textarea id="payload" class="w-full h-32 rounded-xl border border-slate-300 p-3 text-sm" readonly placeholder="سيظهر محتوى الكود هنا بعد إدخال البيانات"></textarea>
+    <textarea id="payload" class="w-full h-32 rounded-xl border border-slate-300 p-3 text-sm" readonly placeholder="سيظهر محتوى الباركود هنا"></textarea>
   </div>
 </section>
 
@@ -153,23 +127,18 @@
 <script>
 const form = document.getElementById('person-form');
 const payloadBox = document.getElementById('payload');
-const pdfCanvas = document.getElementById('pdf417Canvas');
+const barcodeCanvas = document.getElementById('barcodeCanvas');
 const toast = document.getElementById('toast');
 
-// دالة لعرض الإشعارات
-function showToast(message, isError = false) {
-  toast.textContent = message;
-  toast.className = 'toast' + (isError ? ' error' : '');
-  toast.classList.add('show');
-  
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 3000);
+function showToast(msg, error=false){
+    toast.textContent = msg;
+    toast.className = 'toast' + (error?' error':'');
+    toast.classList.add('show');
+    setTimeout(()=>toast.classList.remove('show'),3000);
 }
 
-// تحويل النص العربي إلى UTF-8 مع eci 26 لضمان قراءة عربية
-function buildPayload(data) {
-    const dob = `${String(data.d).padStart(2,'0')}-${String(data.m).padStart(2,'0')}-${String(data.y).padStart(4,'0')}`;
+function buildPayload(data){
+    const dob = `${String(data.d).padStart(2,'0')}-${String(data.m).padStart(2,'0')}-${String(data.y)}`;
     return [
         `FN:${data.fn}`,
         `LN:${data.ln}`,
@@ -181,136 +150,75 @@ function buildPayload(data) {
     ].join('\n');
 }
 
-// التحقق من صحة البيانات
-function validateData(data) {
-  // التحقق من أن حقول النص غير فارغة
-  if (!data.fn || !data.ln || !data.father || !data.mother || !data.pob) {
-    showToast('يرجى ملء جميع الحقول المطلوبة', true);
-    return false;
-  }
-  
-  // التحقق من تاريخ الميلاد
-  const day = parseInt(data.d);
-  const month = parseInt(data.m);
-  const year = parseInt(data.y);
-  
-  if (isNaN(day) || day < 1 || day > 31) {
-    showToast('يرجى إدخال يوم صحيح بين 1 و 31', true);
-    return false;
-  }
-  
-  if (isNaN(month) || month < 1 || month > 12) {
-    showToast('يرجى إدخال شهر صحيح بين 1 و 12', true);
-    return false;
-  }
-  
-  if (isNaN(year) || year < 1900 || year > new Date().getFullYear()) {
-    showToast('يرجى إدخال سنة صحيحة', true);
-    return false;
-  }
-  
-  // التحقق من رقم الهوية (يجب أن يكون رقمًا ويتكون من 10 إلى 12 رقمًا)
-  const nidRegex = /^\d{10,12}$/;
-  if (!nidRegex.test(data.nid)) {
-    showToast('يرجى إدخال رقم هوية صحيح (10-12 رقمًا)', true);
-    return false;
-  }
-  
-  return true;
+function validateData(data){
+    if(!data.fn||!data.ln||!data.father||!data.mother||!data.pob){
+        showToast('يرجى ملء جميع الحقول',true); return false;
+    }
+    if(data.d<1||data.d>31){showToast('اليوم غير صالح',true); return false;}
+    if(data.m<1||data.m>12){showToast('الشهر غير صالح',true); return false;}
+    if(data.y<1900||data.y>new Date().getFullYear()){showToast('السنة غير صالحة',true); return false;}
+    if(!/^\d{10,12}$/.test(data.nid)){showToast('رقم الهوية غير صالح',true); return false;}
+    return true;
 }
 
-// توليد PDF417
-function generatePDF417(text) {
-    try {
-        bwipjs.toCanvas(pdfCanvas, {
-            bcid: 'pdf417',
-            text: text,
-            scale: 4,
-            height: 8,
-            includetext: false,
-            columns: 0,
-            securitylevel: 5,
-            eci: 26
+function generateBarcode(text){
+    try{
+        bwipjs.toCanvas(barcodeCanvas,{
+            bcid:'code128',
+            text:text,
+            scale:4,        // تكبير الباركود
+            height:50,      // ارتفاع الأعمدة
+            includetext:false,
+            paddingwidth:10,
+            paddingheight:10
         });
         return true;
-    } catch(e) {
-        showToast('تعذّر توليد PDF417: ' + e, true);
+    }catch(e){
+        showToast('خطأ في توليد الباركود: '+e,true);
         return false;
     }
 }
 
-// تنزيل الكود كصورة
-function downloadCanvas(canvas, filename) {
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = filename;
+function downloadCanvas(canvas,filename){
+    const a=document.createElement('a');
+    a.href=canvas.toDataURL('image/png');
+    a.download=filename;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
 }
 
-// إرسال الفورم
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit',e=>{
     e.preventDefault();
-    const data = {
-        fn: firstName.value.trim(),
-        ln: lastName.value.trim(),
-        father: fatherName.value.trim(),
-        mother: motherName.value.trim(),
-        pob: birthPlace.value.trim(),
-        d: +dobDay.value, m: +dobMonth.value, y: +dobYear.value,
-        nid: nationalId.value.trim()
+    const data={
+        fn:firstName.value.trim(),
+        ln:lastName.value.trim(),
+        father:fatherName.value.trim(),
+        mother:motherName.value.trim(),
+        pob:birthPlace.value.trim(),
+        d:+dobDay.value,
+        m:+dobMonth.value,
+        y:+dobYear.value,
+        nid:nationalId.value.trim()
     };
-    
-    if (!validateData(data)) return;
-    
-    const text = buildPayload(data);
-    payloadBox.value = text;
-    
-    if (generatePDF417(text)) {
-      showToast('تم توليد الكود الثنائي بنجاح');
-    }
+    if(!validateData(data)) return;
+    const text=buildPayload(data);
+    payloadBox.value=text;
+    if(generateBarcode(text)) showToast('تم توليد الباركود بنجاح');
 });
 
-// زر التحميل
-document.getElementById('btnDownloadPDF417').addEventListener('click', () => {
-    if (!pdfCanvas.width) {
-      showToast('يرجى توليد الكود أولاً', true);
-      return;
-    }
-    downloadCanvas(pdfCanvas, 'pdf417.png');
-    showToast('تم تحميل الكود بنجاح');
+document.getElementById('btnDownloadBarcode').addEventListener('click',()=>{
+    if(!barcodeCanvas.width){showToast('يرجى توليد الباركود أولاً',true); return;}
+    downloadCanvas(barcodeCanvas,'barcode.png');
+    showToast('تم تحميل الباركود بنجاح');
 });
 
-// زر التصفير
-document.getElementById('btnReset').addEventListener('click', () => {
+document.getElementById('btnReset').addEventListener('click',()=>{
     form.reset();
-    payloadBox.value = "";
-    const ctx = pdfCanvas.getContext('2d');
-    ctx.clearRect(0, 0, pdfCanvas.width, pdfCanvas.height);
-    showToast('تم مسح البيانات بنجاح');
-});
-
-// إضافة دعم الإدخال المحدود لتاريخ الميلاد
-dobDay.addEventListener('input', function() {
-  if (this.value > 31) this.value = 31;
-  if (this.value < 1) this.value = '';
-});
-
-dobMonth.addEventListener('input', function() {
-  if (this.value > 12) this.value = 12;
-  if (this.value < 1) this.value = '';
-});
-
-// dobYear.addEventListener('input', function() {
-//   const currentYear = new Date().getFullYear();
-//   if (this.value > currentYear) this.value = currentYear;
-//   if (this.value < 1900) this.value = '';
-// });
-
-// منع إدخال أحرف غير رقمية في رقم الهوية
-nationalId.addEventListener('input', function() {
-  this.value = this.value.replace(/[^0-9]/g, '');
+    payloadBox.value="";
+    const ctx=barcodeCanvas.getContext('2d');
+    ctx.clearRect(0,0,barcodeCanvas.width,barcodeCanvas.height);
+    showToast('تم مسح البيانات');
 });
 </script>
 </body>
